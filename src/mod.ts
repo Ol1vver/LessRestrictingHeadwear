@@ -5,7 +5,7 @@ import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
 
-import { VFS } from "@spt/utils/VFS";
+import { FileSystem } from "@spt/utils/FileSystem";
 import { jsonc } from "jsonc";
 import path from "path";
 
@@ -19,7 +19,7 @@ class LessRestrictingHeadwear implements IPostDBLoadMod
         this.modShortName = "LessRestrictingHeadwear";
 	}
 
-	public postDBLoad(container: DependencyContainer): void 
+	public async postDBLoad(container: DependencyContainer): Promise<void>
 	{
 		const logger = container.resolve<Ilogger>("WinstonLogger");
 		const db = container.resolve<DatabaseServer>("DatabaseServer");
@@ -27,8 +27,12 @@ class LessRestrictingHeadwear implements IPostDBLoadMod
 		const itemDB = tables.templates.items;
 		const itemHelper = container.resolve<ItemHelper>("ItemHelper");
 
-		const vfs = container.resolve<VFS>("VFS");
-		const config = jsonc.parse(vfs.readFile(path.resolve(__dirname, "../config.jsonc")));
+		const fs = container.resolve<FileSystem>("FileSystem");
+		const configPath = path.resolve(__dirname, "../config.jsonc");
+		const configFileContent = await fs.read(configPath);
+		const configString = configFileContent.toString();
+		const config = jsonc.parse(configString);
+		
 		
 		for (let item in itemDB) {
 			if (itemDB[item]._type !== "Node") {

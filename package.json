@@ -1,10 +1,10 @@
 {
     "name": "MusicManiac-LessRestrictingHeadwear",
-    "version": "2.2.0",
+    "version": "2.3.0",
     "main": "src/mod.js",
     "license": "MIT",
     "author": "MusicManiac",
-    "sptVersion": "3.10.x",
+    "sptVersion": "3.11.x",
     "scripts": {
         "setup": "npm i",
         "build": "node ./packageBuild.ts"
