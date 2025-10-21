@@ -5,7 +5,7 @@ using SPTarkov.Server.Core.Models.Common;
 using SPTarkov.Server.Core.Models.Eft.Common.Tables;
 using SPTarkov.Server.Core.Models.Spt.Mod;
 using SPTarkov.Server.Core.Models.Utils;
-using SPTarkov.Server.Core.Servers;
+using SPTarkov.Server.Core.Services;
 using SPTarkov.Server.Core.Utils;
 using System.Reflection;
 using System.Text;
@@ -18,10 +18,10 @@ public class LessRestrictingHeadwear : IOnLoad
 {
 	public readonly LessRestrictingHeadwearConfig Config;
 	private readonly ISptLogger<LessRestrictingHeadwear> Logger;
-	private readonly DatabaseServer DatabaseServer;
+	private readonly DatabaseService DatabaseService;
 	private readonly ItemHelper ItemHelper;
 
-	public LessRestrictingHeadwear(ISptLogger<LessRestrictingHeadwear> logger, ModHelper modHelper, JsonUtil jsonUtil, DatabaseServer databaseServer, ItemHelper itemHelper)
+	public LessRestrictingHeadwear(ISptLogger<LessRestrictingHeadwear> logger, ModHelper modHelper, JsonUtil jsonUtil, DatabaseService databaseService, ItemHelper itemHelper)
 	{
 		string modPath = modHelper.GetAbsolutePathToModFolder(Assembly.GetExecutingAssembly());
 		string configPath = System.IO.Path.Combine(modPath, "config.jsonc");
@@ -76,14 +76,14 @@ public class LessRestrictingHeadwear : IOnLoad
 
 		Config = modHelper.GetJsonDataFromFile<LessRestrictingHeadwearConfig>(modPath, "config.jsonc");
 		Logger = logger;
-		DatabaseServer = databaseServer;
+		DatabaseService = databaseService;
 		ItemHelper = itemHelper;
 	}
 
 	Task IOnLoad.OnLoad()
 	{
 		int patchedCount = 0;
-		foreach (KeyValuePair<MongoId, TemplateItem> item in DatabaseServer.GetTables().Templates.Items)
+		foreach (KeyValuePair<MongoId, TemplateItem> item in DatabaseService.GetItems())
 		{
 			bool applyPatch = Config.FaceShieldItemIDs.Contains(item.Key);
 			bool[] settings = Config.FaceShieldItemSettings;
