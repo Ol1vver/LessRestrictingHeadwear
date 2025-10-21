@@ -87,13 +87,14 @@ public class LessRestrictingHeadwear : IOnLoad
 		{
 			bool applyPatch = Config.FaceShieldItemIDs.Contains(item.Key);
 			bool[] settings = Config.FaceShieldItemSettings;
-			foreach (MongoId baseClass in Config.ItemSettings.Keys)
-				if (ItemHelper.IsOfBaseclass(item.Key, baseClass))
-				{
-					applyPatch = true;
-					settings = Config.ItemSettings[baseClass];
-					break;
-				}
+			if (!applyPatch)
+				foreach (MongoId baseClass in Config.ItemSettings.Keys)
+					if (ItemHelper.IsOfBaseclass(item.Key, baseClass))
+					{
+						applyPatch = true;
+						settings = Config.ItemSettings[baseClass];
+						break;
+					}
 
 			if (applyPatch)
 			{
