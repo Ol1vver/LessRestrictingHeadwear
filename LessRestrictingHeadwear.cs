@@ -141,7 +141,7 @@ public record LessRestrictingHeadwearModMetadata : AbstractModMetadata
 	public override string Name { get; init; } = "LessRestrictingHeadwear";
 	public override string Author { get; init; } = "MusicManiac";
 	public override List<string>? Contributors { get; init; } = ["olv"];
-	public override SemanticVersioning.Version Version { get; init; } = new("2.4.0");
+	public override SemanticVersioning.Version Version { get; init; } = new("3.0.0");
 	public override SemanticVersioning.Range SptVersion { get; init; } = new("~4.0.0");
 
 
